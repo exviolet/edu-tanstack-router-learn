@@ -1,8 +1,10 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { fetchPost } from "../../posts";
+import { PostsError } from "../posts/-components/PostsError";
 
 export const Route = createFileRoute("/posts/$postId")({
   loader: ({ params }) => fetchPost(params.postId),
+  errorComponent: PostsError,
   pendingMs: 200,
   pendingComponent: () => <div>Загрузка поста...</div>,
   component: RouteComponent,

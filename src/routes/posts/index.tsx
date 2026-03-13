@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PostCard } from "./-components/PostCard";
 import { fetchPosts } from "../../posts";
+import { PostsError } from "./-components/PostsError";
 
 export const Route = createFileRoute("/posts/")({
   validateSearch: (search: Record<string, unknown>) => {
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/posts/")({
   },
 
   loader: async () => fetchPosts(),
+  errorComponent: PostsError,
   pendingMs: 200,
   pendingComponent: () => <div>Загрузка постов...</div>,
 

@@ -17,11 +17,14 @@ const posts: Post[] = [
 ];
 
 export async function fetchPosts(): Promise<Post[]> {
-  await new Promise((resolve) => setTimeout(resolve, 1500));
+  await new Promise((r) => setTimeout(r, 500));
+  if (Math.random() < 0.3) {
+    throw new Error("Не удалось загрузить посты");
+  }
   return posts;
 }
 
 export async function fetchPost(id: string): Promise<Post | undefined> {
-  await new Promise((resolve) => setTimeout(resolve, 1400));
+  await new Promise((resolve) => setTimeout(resolve, 300));
   return posts.find((post) => post.id === Number(id));
 }
