@@ -1,8 +1,19 @@
 import "../app.css";
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
+import {
+  createRootRouteWithContext,
+  Link,
+  Outlet,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
-export const Route = createRootRoute({
+interface RootRouteContext {
+  auth: {
+    isAuthenticated: boolean;
+    username?: string | null;
+  };
+}
+
+export const Route = createRootRouteWithContext<RootRouteContext>()({
   notFoundComponent: () => (
     <div>
       <h2>404 — Страница не найдена</h2>

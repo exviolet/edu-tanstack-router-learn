@@ -1,6 +1,11 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_admin")({
+  beforeLoad: ({ context }) => {
+    return {
+      adminRole: "superadmin",
+    };
+  },
   component: RouteComponent,
 });
 
