@@ -1,3 +1,4 @@
+import "../../app.css";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PostCard } from "./-components/PostCard";
 
@@ -88,6 +89,7 @@ function RouteComponent() {
       <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
         {page > 1 && (
           <Link
+            className="nav-link"
             to="/posts"
             search={(prev) => ({ ...prev, page: prev.page - 1 })}
           >
@@ -97,6 +99,7 @@ function RouteComponent() {
 
         {hasNextPage && (
           <Link
+            className="nav-link"
             to="/posts"
             search={(prev) => ({ ...prev, page: prev.page + 1 })}
           >

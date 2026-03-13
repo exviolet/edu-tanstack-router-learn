@@ -1,0 +1,13 @@
+body {
+  background-color: #fffcf0;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #24837b;
+}
+
+.nav-link[data-status="active"] {
+  text-decoration: underline;
+  font-weight: bold;
+}
