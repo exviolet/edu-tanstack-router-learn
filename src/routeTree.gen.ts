@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as ContactsRouteImport } from './routes/contacts'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as PostsRouteRouteImport } from './routes/posts/route'
@@ -19,6 +20,11 @@ import { Route as PostsPostIdRouteImport } from './routes/posts/$postId'
 import { Route as AdminSettingsRouteImport } from './routes/_admin/settings'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactsRoute = ContactsRouteImport.update({
   id: '/contacts',
   path: '/contacts',
@@ -69,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/posts': typeof PostsRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/contacts': typeof ContactsRoute
+  '/login': typeof LoginRoute
   '/dashboard': typeof AdminDashboardRoute
   '/settings': typeof AdminSettingsRoute
   '/posts/$postId': typeof PostsPostIdRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contacts': typeof ContactsRoute
+  '/login': typeof LoginRoute
   '/dashboard': typeof AdminDashboardRoute
   '/settings': typeof AdminSettingsRoute
   '/posts/$postId': typeof PostsPostIdRoute
@@ -90,6 +98,7 @@ export interface FileRoutesById {
   '/posts': typeof PostsRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/contacts': typeof ContactsRoute
+  '/login': typeof LoginRoute
   '/_admin/dashboard': typeof AdminDashboardRoute
   '/_admin/settings': typeof AdminSettingsRoute
   '/posts/$postId': typeof PostsPostIdRoute
@@ -102,6 +111,7 @@ export interface FileRouteTypes {
     | '/posts'
     | '/about'
     | '/contacts'
+    | '/login'
     | '/dashboard'
     | '/settings'
     | '/posts/$postId'
@@ -111,6 +121,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contacts'
+    | '/login'
     | '/dashboard'
     | '/settings'
     | '/posts/$postId'
@@ -122,6 +133,7 @@ export interface FileRouteTypes {
     | '/posts'
     | '/about'
     | '/contacts'
+    | '/login'
     | '/_admin/dashboard'
     | '/_admin/settings'
     | '/posts/$postId'
@@ -134,10 +146,18 @@ export interface RootRouteChildren {
   PostsRouteRoute: typeof PostsRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   ContactsRoute: typeof ContactsRoute
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contacts': {
       id: '/contacts'
       path: '/contacts'
@@ -238,6 +258,7 @@ const rootRouteChildren: RootRouteChildren = {
   PostsRouteRoute: PostsRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   ContactsRoute: ContactsRoute,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
