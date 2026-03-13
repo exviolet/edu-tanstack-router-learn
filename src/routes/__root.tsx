@@ -3,6 +3,12 @@ import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
 export const Route = createRootRoute({
+  notFoundComponent: () => (
+    <div>
+      <h2>404 — Страница не найдена</h2>
+      <Link to="/">На главную</Link>
+    </div>
+  ),
   component: () => (
     <>
       <div style={{ display: "flex", gap: "10px", padding: "10px" }}>

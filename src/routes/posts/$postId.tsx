@@ -1,9 +1,16 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, notFound } from "@tanstack/react-router";
 import { fetchPost } from "../../posts";
 import { PostsError } from "../posts/-components/PostsError";
 
 export const Route = createFileRoute("/posts/$postId")({
-  loader: ({ params }) => fetchPost(params.postId),
+  loader: async ({ params }) => {
+    const post = await fetchPost(params.postId);
+    if (!post) {
+      throw notFound();
+    }
+    return post;
+  },
+  notFoundComponent: () => <div>Пост не найден</div>,
   errorComponent: PostsError,
   pendingMs: 200,
   pendingComponent: () => <div>Загрузка поста...</div>,
@@ -15,8 +22,6 @@ function RouteComponent() {
   const navigate = useNavigate();
 
   const post = Route.useLoaderData();
-
-  if (!post) return <div>Пост не найден</div>;
 
   return (
     <div>

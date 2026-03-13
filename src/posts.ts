@@ -18,9 +18,6 @@ const posts: Post[] = [
 
 export async function fetchPosts(): Promise<Post[]> {
   await new Promise((r) => setTimeout(r, 500));
-  if (Math.random() < 0.3) {
-    throw new Error("Не удалось загрузить посты");
-  }
   return posts;
 }
 
