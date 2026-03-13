@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as PostsRouteRouteImport } from './routes/posts/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PostsIndexRouteImport } from './routes/posts/index'
+import { Route as PostsPostIdRouteImport } from './routes/posts/$postId'
 
 const ContactsRoute = ContactsRouteImport.update({
   id: '/contacts',
@@ -40,18 +41,25 @@ const PostsIndexRoute = PostsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PostsRouteRoute,
 } as any)
+const PostsPostIdRoute = PostsPostIdRouteImport.update({
+  id: '/$postId',
+  path: '/$postId',
+  getParentRoute: () => PostsRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/posts': typeof PostsRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/contacts': typeof ContactsRoute
+  '/posts/$postId': typeof PostsPostIdRoute
   '/posts/': typeof PostsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contacts': typeof ContactsRoute
+  '/posts/$postId': typeof PostsPostIdRoute
   '/posts': typeof PostsIndexRoute
 }
 export interface FileRoutesById {
@@ -60,14 +68,28 @@ export interface FileRoutesById {
   '/posts': typeof PostsRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/contacts': typeof ContactsRoute
+  '/posts/$postId': typeof PostsPostIdRoute
   '/posts/': typeof PostsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/posts' | '/about' | '/contacts' | '/posts/'
+  fullPaths:
+    | '/'
+    | '/posts'
+    | '/about'
+    | '/contacts'
+    | '/posts/$postId'
+    | '/posts/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contacts' | '/posts'
-  id: '__root__' | '/' | '/posts' | '/about' | '/contacts' | '/posts/'
+  to: '/' | '/about' | '/contacts' | '/posts/$postId' | '/posts'
+  id:
+    | '__root__'
+    | '/'
+    | '/posts'
+    | '/about'
+    | '/contacts'
+    | '/posts/$postId'
+    | '/posts/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -114,14 +136,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsIndexRouteImport
       parentRoute: typeof PostsRouteRoute
     }
+    '/posts/$postId': {
+      id: '/posts/$postId'
+      path: '/$postId'
+      fullPath: '/posts/$postId'
+      preLoaderRoute: typeof PostsPostIdRouteImport
+      parentRoute: typeof PostsRouteRoute
+    }
   }
 }
 
 interface PostsRouteRouteChildren {
+  PostsPostIdRoute: typeof PostsPostIdRoute
   PostsIndexRoute: typeof PostsIndexRoute
 }
 
 const PostsRouteRouteChildren: PostsRouteRouteChildren = {
+  PostsPostIdRoute: PostsPostIdRoute,
   PostsIndexRoute: PostsIndexRoute,
 }
 
