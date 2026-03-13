@@ -1,6 +1,6 @@
-import "../../app.css";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PostCard } from "./-components/PostCard";
+import { fetchPosts } from "../../posts";
 
 export const Route = createFileRoute("/posts/")({
   validateSearch: (search: Record<string, unknown>) => {
@@ -11,22 +11,13 @@ export const Route = createFileRoute("/posts/")({
     };
   },
 
+  loader: async () => fetchPosts(),
+
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const posts = [
-    { id: 1, title: "Первый пост" },
-    { id: 2, title: "Второй пост" },
-    { id: 3, title: "Третий пост" },
-    { id: 4, title: "Четвертый пост" },
-    { id: 5, title: "Пятый пост" },
-    { id: 6, title: "Шестой пост" },
-    { id: 7, title: "Седьмой пост" },
-    { id: 8, title: "Восьмой пост" },
-    { id: 9, title: "Девятый пост" },
-    { id: 10, title: "Десятый пост" },
-  ];
+  const posts = Route.useLoaderData();
 
   const navigate = useNavigate();
   const { page, filter, sort } = Route.useSearch();

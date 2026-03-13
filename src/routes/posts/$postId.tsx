@@ -1,6 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { fetchPost } from "../../posts";
 
 export const Route = createFileRoute("/posts/$postId")({
+  loader: ({ params }) => fetchPost(params.postId),
   component: RouteComponent,
 });
 
@@ -8,20 +10,7 @@ function RouteComponent() {
   const { postId } = Route.useParams();
   const navigate = useNavigate();
 
-  const posts = [
-    { id: 1, title: "Первый пост" },
-    { id: 2, title: "Второй пост" },
-    { id: 3, title: "Третий пост" },
-    { id: 4, title: "Четвертый пост" },
-    { id: 5, title: "Пятый пост" },
-    { id: 6, title: "Шестой пост" },
-    { id: 7, title: "Седьмой пост" },
-    { id: 8, title: "Восьмой пост" },
-    { id: 9, title: "Девятый пост" },
-    { id: 10, title: "Десятый пост" },
-  ];
-
-  const post = posts.find((p) => p.id === Number(postId));
+  const post = Route.useLoaderData();
 
   if (!post) return <div>Пост не найден</div>;
 
