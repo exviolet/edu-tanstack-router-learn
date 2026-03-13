@@ -12,6 +12,8 @@ export const Route = createFileRoute("/posts/")({
   },
 
   loader: async () => fetchPosts(),
+  pendingMs: 200,
+  pendingComponent: () => <div>Загрузка постов...</div>,
 
   component: RouteComponent,
 });

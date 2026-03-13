@@ -3,6 +3,8 @@ import { fetchPost } from "../../posts";
 
 export const Route = createFileRoute("/posts/$postId")({
   loader: ({ params }) => fetchPost(params.postId),
+  pendingMs: 200,
+  pendingComponent: () => <div>Загрузка поста...</div>,
   component: RouteComponent,
 });
 

@@ -17,11 +17,11 @@ const posts: Post[] = [
 ];
 
 export async function fetchPosts(): Promise<Post[]> {
-  await new Promise((resolve) => setTimeout(resolve, 400));
+  await new Promise((resolve) => setTimeout(resolve, 1500));
   return posts;
 }
 
 export async function fetchPost(id: string): Promise<Post | undefined> {
-  await new Promise((resolve) => setTimeout(resolve, 300));
+  await new Promise((resolve) => setTimeout(resolve, 1400));
   return posts.find((post) => post.id === Number(id));
 }
