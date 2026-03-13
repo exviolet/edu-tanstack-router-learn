@@ -14,6 +14,13 @@ export const Route = createRootRoute({
           Home
         </Link>
         <Link
+          to="/posts"
+          activeProps={{ style: { fontWeight: "bold", color: "blue" } }}
+          inactiveProps={{ style: { color: "gray" } }}
+        >
+          Posts
+        </Link>
+        <Link
           to="/about"
           activeProps={{ style: { fontWeight: "bold", color: "blue" } }}
           inactiveProps={{ style: { color: "gray" } }}
