@@ -15,6 +15,9 @@ export const Route = createRootRoute({
         <Link to="/" activeOptions={{ exact: true }} className="nav-link">
           Home
         </Link>
+        <Link to="/dashboard" className="nav-link">
+          Dashboard
+        </Link>
         <Link
           to="/posts"
           className="nav-link"
