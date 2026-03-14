@@ -62,11 +62,11 @@ function RouteComponent() {
     },
   });
 
-  if (isPending) return <div>Загрузка...</div>;
-  if (isError) return <div>Ошибка: {error.message}</div>;
-
   const navigate = useNavigate();
   const { page, filter, sort } = Route.useSearch();
+
+  if (isPending) return <div>Загрузка...</div>;
+  if (isError) return <div>Ошибка: {error.message}</div>;
 
   const filteredPosts = data.filter((post) =>
     post.title.toLowerCase().includes(filter.toLowerCase()),
