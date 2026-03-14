@@ -69,6 +69,14 @@ export function getCommentsByPostId(postId: number) {
   return comments.filter((c) => c.postId === postId);
 }
 
+export function getStats() {
+  return {
+    totalPosts: posts.length,
+    totalComments: comments.length,
+    avgCommentsPerPost: +(comments.length / posts.length).toFixed(1),
+  };
+}
+
 export function deletePost(id: number) {
   const index = posts.findIndex((p) => p.id === id);
   if (index === -1) return false;
