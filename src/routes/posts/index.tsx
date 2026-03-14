@@ -34,6 +34,7 @@ function RouteComponent() {
           total: number;
         }>;
       },
+      select: (data) => data.posts,
       placeholderData: keepPreviousData,
     });
 
@@ -43,7 +44,7 @@ function RouteComponent() {
   const navigate = useNavigate();
   const { page, filter, sort } = Route.useSearch();
 
-  const filteredPosts = data.posts.filter((post) =>
+  const filteredPosts = data.filter((post) =>
     post.title.toLowerCase().includes(filter.toLowerCase()),
   );
 
