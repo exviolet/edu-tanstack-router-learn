@@ -16,7 +16,7 @@ const router = createRouter({
   defaultPendingMs: 300,
   defaultPendingMinMs: 500,
   defaultPendingComponent: () => <div>Загрузка...</div>,
-  context: { auth },
+  context: { auth, queryClient },
 });
 
 declare module "@tanstack/react-router" {

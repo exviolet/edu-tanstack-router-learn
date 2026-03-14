@@ -7,6 +7,20 @@ import { postKeys } from "../../api/queryKeys";
 import { PostsError } from "../posts/-components/PostsError";
 
 export const Route = createFileRoute("/posts/$postId")({
+  loader: async ({ params, context }) => {
+    await context.queryClient.ensureQueryData({
+      queryKey: postKeys.detail(Number(params.postId)),
+      queryFn: async () => {
+        const res = await fetch(
+          `http://localhost:3001/api/posts/${params.postId}`,
+        );
+        if (!res.ok) {
+          throw new Error("Failed to fetch post");
+        }
+        return res.json();
+      },
+    });
+  },
   notFoundComponent: () => <div>Пост не найден</div>,
   errorComponent: PostsError,
   pendingMs: 200,

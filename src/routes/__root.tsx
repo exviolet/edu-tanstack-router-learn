@@ -1,3 +1,4 @@
+import type { QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "../app.css";
 import {
@@ -12,6 +13,7 @@ interface RootRouteContext {
     isAuthenticated: boolean;
     username?: string | null;
   };
+  queryClient: QueryClient;
 }
 
 export const Route = createRootRouteWithContext<RootRouteContext>()({
