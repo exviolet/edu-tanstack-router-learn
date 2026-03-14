@@ -1,7 +1,12 @@
 import { useState } from "react";
 
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { keepPreviousData, useQuery, useMutation } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useQuery,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import { postKeys } from "../../api/queryKeys";
 import { PostCard } from "./-components/PostCard";
@@ -24,6 +29,8 @@ export const Route = createFileRoute("/posts/")({
 });
 
 function RouteComponent() {
+  const queryClient = useQueryClient();
+
   const { data, isPlaceholderData, isPending, isFetching, isError, error } =
     useQuery({
       queryKey: postKeys.all,
@@ -59,6 +66,7 @@ function RouteComponent() {
     onSuccess: () => {
       setNewPostTitle("");
       setNewPostBody("");
+      queryClient.invalidateQueries({ queryKey: postKeys.all });
     },
   });
 
