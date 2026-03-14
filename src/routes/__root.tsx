@@ -1,3 +1,4 @@
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "../app.css";
 import {
   createRootRouteWithContext,
@@ -46,6 +47,7 @@ export const Route = createRootRouteWithContext<RootRouteContext>()({
       </div>
       <hr />
       <Outlet />
+      <ReactQueryDevtools initialIsOpen={false} />
       <TanStackRouterDevtools />
     </>
   ),
