@@ -23,7 +23,7 @@ export const Route = createFileRoute("/posts/")({
 });
 
 function RouteComponent() {
-  const { data, isPending, isError, error } = useQuery({
+  const { data, isPending, isFetching, isError, error } = useQuery({
     queryKey: postKeys.all,
     queryFn: async () => {
       const res = await fetch("http://localhost:3001/api/posts");
@@ -58,7 +58,10 @@ function RouteComponent() {
 
   return (
     <div>
-      <h1>Страница {page}</h1>
+      <h1>
+        Страница {page}{" "}
+        {isFetching && <span style={{ fontSize: "14px" }}>Обновление...</span>}
+      </h1>
 
       <div style={{ marginBottom: "20px" }}>
         <label>Поиск: </label>
