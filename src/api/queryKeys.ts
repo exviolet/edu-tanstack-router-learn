@@ -5,4 +5,5 @@ export const postKeys = {
 
   detail: (id: number) => [...postKeys.all, id] as const,
   comments: (id: number) => [...postKeys.all, id, "comments"] as const,
+  infinite: () => [...postKeys.all, "infinite"] as const,
 };

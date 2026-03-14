@@ -38,6 +38,14 @@ export const Route = createRootRouteWithContext<RootRouteContext>()({
         >
           Posts
         </Link>
+        <Link
+          to="/posts/infinite"
+          className="nav-link"
+          preload="intent"
+          preloadDelay={200}
+        >
+          Infinite Posts
+        </Link>
         <Link to="/about" className="nav-link">
           About
         </Link>
