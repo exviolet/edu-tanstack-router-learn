@@ -41,9 +41,9 @@ function RouteComponent() {
 
   return (
     <div>
-      {isPending && <p>Loading...</p>}
-      {isError && <p>Error: {error.message}</p>}
-      {postsData && postsData.posts.length === 0 && <p>No posts found</p>}
+      {isPending && <p>Загрузка...</p>}
+      {isError && <p>Ошибка: {error.message}</p>}
+      {postsData && postsData.posts.length === 0 && <p>Нет постов</p>}
       {postsData && postsData.posts.length > 0 && (
         <ul>
           {postsData.posts.slice(0, 3).map((post) => (
@@ -52,13 +52,13 @@ function RouteComponent() {
         </ul>
       )}
 
-      {statsPending && <p>Loading stats...</p>}
-      {isStatsError && <p>Error:{statsError.message}</p>}
+      {statsPending && <p>Загрузка статистики...</p>}
+      {isStatsError && <p>Ошибка: {statsError.message}</p>}
       {stats && (
         <div>
-          <p>Total posts: {stats.totalPosts}</p>
-          <p>Total comments: {stats.totalComments}</p>
-          <p>Total avgCommentsPerPost: {stats.avgCommentsPerPost}</p>
+          <p>Все посты: {stats.totalPosts}</p>
+          <p>Комментарии: {stats.totalComments}</p>
+          <p>Средняя комментарии на пост: {stats.avgCommentsPerPost}</p>
         </div>
       )}
     </div>

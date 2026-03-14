@@ -16,6 +16,8 @@ import { Route as PostsRouteRouteImport } from './routes/posts/route'
 import { Route as AdminRouteRouteImport } from './routes/_admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PostsIndexRouteImport } from './routes/posts/index'
+import { Route as PostsInfiniteRouteImport } from './routes/posts/infinite'
+import { Route as PostsDashboardRouteImport } from './routes/posts/dashboard'
 import { Route as PostsPostIdRouteImport } from './routes/posts/$postId'
 import { Route as AdminSettingsRouteImport } from './routes/_admin/settings'
 import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
@@ -54,6 +56,16 @@ const PostsIndexRoute = PostsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PostsRouteRoute,
 } as any)
+const PostsInfiniteRoute = PostsInfiniteRouteImport.update({
+  id: '/infinite',
+  path: '/infinite',
+  getParentRoute: () => PostsRouteRoute,
+} as any)
+const PostsDashboardRoute = PostsDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => PostsRouteRoute,
+} as any)
 const PostsPostIdRoute = PostsPostIdRouteImport.update({
   id: '/$postId',
   path: '/$postId',
@@ -79,6 +91,8 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AdminDashboardRoute
   '/settings': typeof AdminSettingsRoute
   '/posts/$postId': typeof PostsPostIdRoute
+  '/posts/dashboard': typeof PostsDashboardRoute
+  '/posts/infinite': typeof PostsInfiniteRoute
   '/posts/': typeof PostsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -89,6 +103,8 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AdminDashboardRoute
   '/settings': typeof AdminSettingsRoute
   '/posts/$postId': typeof PostsPostIdRoute
+  '/posts/dashboard': typeof PostsDashboardRoute
+  '/posts/infinite': typeof PostsInfiniteRoute
   '/posts': typeof PostsIndexRoute
 }
 export interface FileRoutesById {
@@ -102,6 +118,8 @@ export interface FileRoutesById {
   '/_admin/dashboard': typeof AdminDashboardRoute
   '/_admin/settings': typeof AdminSettingsRoute
   '/posts/$postId': typeof PostsPostIdRoute
+  '/posts/dashboard': typeof PostsDashboardRoute
+  '/posts/infinite': typeof PostsInfiniteRoute
   '/posts/': typeof PostsIndexRoute
 }
 export interface FileRouteTypes {
@@ -115,6 +133,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/settings'
     | '/posts/$postId'
+    | '/posts/dashboard'
+    | '/posts/infinite'
     | '/posts/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -125,6 +145,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/settings'
     | '/posts/$postId'
+    | '/posts/dashboard'
+    | '/posts/infinite'
     | '/posts'
   id:
     | '__root__'
@@ -137,6 +159,8 @@ export interface FileRouteTypes {
     | '/_admin/dashboard'
     | '/_admin/settings'
     | '/posts/$postId'
+    | '/posts/dashboard'
+    | '/posts/infinite'
     | '/posts/'
   fileRoutesById: FileRoutesById
 }
@@ -200,6 +224,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsIndexRouteImport
       parentRoute: typeof PostsRouteRoute
     }
+    '/posts/infinite': {
+      id: '/posts/infinite'
+      path: '/infinite'
+      fullPath: '/posts/infinite'
+      preLoaderRoute: typeof PostsInfiniteRouteImport
+      parentRoute: typeof PostsRouteRoute
+    }
+    '/posts/dashboard': {
+      id: '/posts/dashboard'
+      path: '/dashboard'
+      fullPath: '/posts/dashboard'
+      preLoaderRoute: typeof PostsDashboardRouteImport
+      parentRoute: typeof PostsRouteRoute
+    }
     '/posts/$postId': {
       id: '/posts/$postId'
       path: '/$postId'
@@ -240,11 +278,15 @@ const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
 
 interface PostsRouteRouteChildren {
   PostsPostIdRoute: typeof PostsPostIdRoute
+  PostsDashboardRoute: typeof PostsDashboardRoute
+  PostsInfiniteRoute: typeof PostsInfiniteRoute
   PostsIndexRoute: typeof PostsIndexRoute
 }
 
 const PostsRouteRouteChildren: PostsRouteRouteChildren = {
   PostsPostIdRoute: PostsPostIdRoute,
+  PostsDashboardRoute: PostsDashboardRoute,
+  PostsInfiniteRoute: PostsInfiniteRoute,
   PostsIndexRoute: PostsIndexRoute,
 }
 

@@ -38,6 +38,9 @@ function RouteComponent() {
           <Link className="nav-link" to="/dashboard">
             Dashboard
           </Link>{" "}
+          <Link className="nav-link" to="/posts/dashboard">
+            Posts Dashboard
+          </Link>
           <Link className="nav-link" to="/settings">
             Settings
           </Link>{" "}
