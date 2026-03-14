@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PostCard } from "./-components/PostCard";
-import { fetchPosts } from "../../posts";
 import { PostsError } from "./-components/PostsError";
+import { useQuery } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/posts/")({
   validateSearch: (search: Record<string, unknown>) => {
@@ -12,7 +12,6 @@ export const Route = createFileRoute("/posts/")({
     };
   },
 
-  loader: async () => fetchPosts(),
   errorComponent: PostsError,
   pendingMs: 200,
   pendingComponent: () => <div>Загрузка постов...</div>,
@@ -21,12 +20,25 @@ export const Route = createFileRoute("/posts/")({
 });
 
 function RouteComponent() {
-  const posts = Route.useLoaderData();
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ["posts"],
+    queryFn: async () => {
+      const res = await fetch("http://localhost:3001/api/posts");
+      if (!res.ok) throw new Error("Ошибка загрузки");
+      return res.json() as Promise<{
+        posts: { id: number; title: string }[];
+        total: number;
+      }>;
+    },
+  });
+
+  if (isPending) return <div>Загрузка...</div>;
+  if (isError) return <div>Ошибка: {error.message}</div>;
 
   const navigate = useNavigate();
   const { page, filter, sort } = Route.useSearch();
 
-  const filteredPosts = posts.filter((post) =>
+  const filteredPosts = data.posts.filter((post) =>
     post.title.toLowerCase().includes(filter.toLowerCase()),
   );
 
