@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 import { postKeys } from "../../api/queryKeys";
 import { PostCard } from "./-components/PostCard";
@@ -23,17 +23,19 @@ export const Route = createFileRoute("/posts/")({
 });
 
 function RouteComponent() {
-  const { data, isPending, isFetching, isError, error } = useQuery({
-    queryKey: postKeys.all,
-    queryFn: async () => {
-      const res = await fetch("http://localhost:3001/api/posts");
-      if (!res.ok) throw new Error("Ошибка загрузки");
-      return res.json() as Promise<{
-        posts: { id: number; title: string }[];
-        total: number;
-      }>;
-    },
-  });
+  const { data, isPlaceholderData, isPending, isFetching, isError, error } =
+    useQuery({
+      queryKey: postKeys.all,
+      queryFn: async () => {
+        const res = await fetch("http://localhost:3001/api/posts");
+        if (!res.ok) throw new Error("Ошибка загрузки");
+        return res.json() as Promise<{
+          posts: { id: number; title: string }[];
+          total: number;
+        }>;
+      },
+      placeholderData: keepPreviousData,
+    });
 
   if (isPending) return <div>Загрузка...</div>;
   if (isError) return <div>Ошибка: {error.message}</div>;
@@ -90,7 +92,7 @@ function RouteComponent() {
       </div>
 
       {slicedPosts.length > 0 ? (
-        <ul>
+        <ul style={{ opacity: isPlaceholderData ? 0.5 : 1 }}>
           {slicedPosts.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}
