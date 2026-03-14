@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { getPosts, getPost, createPost, updatePost, deletePost } from "../db";
+import { getPosts, getPost, createPost, updatePost, deletePost, getCommentsByPostId } from "../db";
 
 const delay = () => new Promise((r) => setTimeout(r, 300));
 
@@ -20,6 +20,12 @@ posts.get("/:id", async (c) => {
   const post = getPost(Number(c.req.param("id")));
   if (!post) return c.json({ error: "Post not found" }, 404);
   return c.json(post);
+});
+
+posts.get("/:id/comments", async (c) => {
+  await delay();
+  const comments = getCommentsByPostId(Number(c.req.param("id")));
+  return c.json(comments);
 });
 
 posts.post("/", async (c) => {

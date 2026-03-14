@@ -4,4 +4,5 @@ export const postKeys = {
     filters ? ([...postKeys.all, filters] as const) : postKeys.all,
 
   detail: (id: number) => [...postKeys.all, id] as const,
+  comments: (id: number) => [...postKeys.all, id, "comments"] as const,
 };

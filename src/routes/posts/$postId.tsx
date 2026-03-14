@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
 import { useQuery } from "@tanstack/react-query";
@@ -31,6 +32,24 @@ function RouteComponent() {
     },
   });
 
+  const [showComments, setShowComments] = useState(false);
+
+  const {
+    data: comments,
+    isFetching,
+    isError: commentsError,
+  } = useQuery({
+    queryKey: postKeys.comments(Number(id)),
+    queryFn: async () => {
+      const res = await fetch(`http://localhost:3001/api/posts/${id}/comments`);
+      if (!res.ok) {
+        throw new Error("Failed to fetch comments");
+      }
+      return res.json();
+    },
+    enabled: showComments,
+  });
+
   return (
     <div>
       <button
@@ -39,12 +58,34 @@ function RouteComponent() {
       >
         ← Назад к списку
       </button>
+      <button onClick={() => setShowComments(!showComments)}>
+        {showComments ? "Скрыть" : "Показать"} комментарии
+      </button>
 
       {isPending && <div>Загрузка поста...</div>}
       {isError && <div>Ошибка загрузки поста</div>}
-      {post && <h3>{post.title}</h3>}
-      {post && <p>ID поста: {id}</p>}
-      {post && <p>{post.body}</p>}
+      {post && (
+        <div>
+          <h3>{post.title}</h3>
+          <p>ID поста: {id}</p>
+          <p>{post.body}</p>
+        </div>
+      )}
+
+      {showComments && (
+        <div style={{ marginTop: "1rem" }}>
+          <h4>Комментарии</h4>
+          {isFetching && <div>Загрузка комментариев...</div>}
+          {commentsError && <div>Ошибка загрузки комментариев</div>}
+          {comments &&
+            comments.map((comment) => (
+              <div key={comment.id} style={{ marginBottom: "8px" }}>
+                <strong>{comment.author}</strong>
+                <p>{comment.text}</p>
+              </div>
+            ))}
+        </div>
+      )}
     </div>
   );
 }

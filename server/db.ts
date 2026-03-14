@@ -50,6 +50,25 @@ export function updatePost(id: number, data: { title?: string; body?: string }) 
   return post;
 }
 
+export type Comment = {
+  id: number;
+  postId: number;
+  author: string;
+  text: string;
+};
+
+const comments: Comment[] = [
+  { id: 1, postId: 1, author: "Анна", text: "Отличный пост!" },
+  { id: 2, postId: 1, author: "Борис", text: "Спасибо за информацию" },
+  { id: 3, postId: 2, author: "Виктор", text: "Интересная тема" },
+  { id: 4, postId: 3, author: "Анна", text: "Жду продолжения" },
+  { id: 5, postId: 5, author: "Галина", text: "Очень полезно!" },
+];
+
+export function getCommentsByPostId(postId: number) {
+  return comments.filter((c) => c.postId === postId);
+}
+
 export function deletePost(id: number) {
   const index = posts.findIndex((p) => p.id === id);
   if (index === -1) return false;
