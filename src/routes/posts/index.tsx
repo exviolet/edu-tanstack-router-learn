@@ -63,9 +63,21 @@ function RouteComponent() {
       if (!res.ok) throw new Error("Ошибка добавления поста");
       return res.json();
     },
-    onSuccess: () => {
+    onMutate: async (newPost) => {
+      await queryClient.cancelQueries({ queryKey: postKeys.all });
+      const previousPosts = queryClient.getQueryData(postKeys.all);
+      queryClient.setQueryData(postKeys.all, (old) => ({
+        ...old,
+        posts: [...(old?.posts ?? []), { id: Date.now(), ...newPost }],
+      }));
       setNewPostTitle("");
       setNewPostBody("");
+      return { previousPosts };
+    },
+    onError: (_error, _newPost, context) => {
+      queryClient.setQueryData(postKeys.all, context.previousPosts);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: postKeys.all });
     },
   });
