@@ -1,6 +1,7 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { keepPreviousData, useQuery, useMutation } from "@tanstack/react-query";
 
 import { postKeys } from "../../api/queryKeys";
 import { PostCard } from "./-components/PostCard";
@@ -37,6 +38,29 @@ function RouteComponent() {
       select: (data) => data.posts,
       placeholderData: keepPreviousData,
     });
+
+  const [newPostTitle, setNewPostTitle] = useState("");
+  const [newPostBody, setNewPostBody] = useState("");
+
+  const {
+    mutate,
+    isPending: isCreating,
+    isError: isCreateError,
+  } = useMutation({
+    mutationFn: async (newPost: { title: string; body: string }) => {
+      const res = await fetch("http://localhost:3001/api/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newPost),
+      });
+      if (!res.ok) throw new Error("Ошибка добавления поста");
+      return res.json();
+    },
+    onSuccess: () => {
+      setNewPostTitle("");
+      setNewPostBody("");
+    },
+  });
 
   if (isPending) return <div>Загрузка...</div>;
   if (isError) return <div>Ошибка: {error.message}</div>;
@@ -90,6 +114,27 @@ function RouteComponent() {
           <option value="asc">По возрастанию</option>
           <option value="desc">По убыванию</option>
         </select>
+      </div>
+
+      <div>
+        <label>Добавить новый пост: </label>
+        <input
+          type="text"
+          value={newPostTitle}
+          onChange={(e) => setNewPostTitle(e.target.value)}
+        />
+        <input
+          type="text"
+          value={newPostBody}
+          onChange={(e) => setNewPostBody(e.target.value)}
+        />
+        <button
+          disabled={isCreating}
+          onClick={() => mutate({ title: newPostTitle, body: newPostBody })}
+        >
+          {isCreating ? "Создание..." : "Добавить"}
+        </button>
+        {isCreateError && <div>Ошибка при создании поста</div>}
       </div>
 
       {slicedPosts.length > 0 ? (
