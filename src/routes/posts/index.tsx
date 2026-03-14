@@ -1,7 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+
+import { useQuery } from "@tanstack/react-query";
+
+import { postKeys } from "../../api/queryKeys";
 import { PostCard } from "./-components/PostCard";
 import { PostsError } from "./-components/PostsError";
-import { useQuery } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/posts/")({
   validateSearch: (search: Record<string, unknown>) => {
@@ -21,7 +24,7 @@ export const Route = createFileRoute("/posts/")({
 
 function RouteComponent() {
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ["posts"],
+    queryKey: postKeys.all,
     queryFn: async () => {
       const res = await fetch("http://localhost:3001/api/posts");
       if (!res.ok) throw new Error("Ошибка загрузки");
