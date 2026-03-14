@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 import { postKeys } from "../../api/queryKeys";
 import { PostsError } from "../posts/-components/PostsError";
 
@@ -16,6 +17,7 @@ export const Route = createFileRoute("/posts/$postId")({
 function RouteComponent() {
   const { postId: id } = Route.useParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const {
     data: post,
@@ -50,6 +52,32 @@ function RouteComponent() {
     enabled: showComments,
   });
 
+  const {
+    mutate,
+    error,
+    isPending: isDeleting,
+  } = useMutation({
+    mutationFn: async (id) => {
+      const res = await fetch(`http://localhost:3001/api/posts/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        throw new Error("Failed to delete post");
+      }
+      return res.json();
+    },
+    onError: (error) => {
+      alert("Не удалось удалить пост: " + error.message);
+    },
+    onSuccess: () => {
+      navigate({ to: "/posts" });
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: postKeys.all });
+    },
+    retry: 1,
+  });
+
   return (
     <div>
       <button
@@ -58,6 +86,11 @@ function RouteComponent() {
       >
         ← Назад к списку
       </button>
+
+      <button disabled={isDeleting} onClick={() => mutate(Number(id))}>
+        {isDeleting ? "Удаление..." : "Удалить пост"}
+      </button>
+
       <button onClick={() => setShowComments(!showComments)}>
         {showComments ? "Скрыть" : "Показать"} комментарии
       </button>
